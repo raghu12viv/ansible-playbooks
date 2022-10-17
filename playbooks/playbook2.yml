@@ -1,0 +1,25 @@
+---
+- name: Configuring apache2 on managed nodes
+  hosts: all
+  tasks:
+    - name: installing apache2
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+    - name: edit the index.html file
+      copy:
+        content: "vivek"
+        dest: /var/www/html/index.html
+    - name: restarting apache2
+      service:
+        name: apache2
+        state: restarted
+    - name: checking apache responce on server1
+      uri:
+        url: http://172.31.20.198:8080
+        status_code: 200
+    - name: checking apache responce on server2
+      uri:
+        url: http://172.31.16.159:8080
+        status_code: 200
